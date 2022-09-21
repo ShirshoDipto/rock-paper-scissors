@@ -1,50 +1,96 @@
 // Your JavaScript goes here!
 
 function getComputerChoice() {
-    let x = Math.random(1, 3);
-    if (x === 1) return "rock";
-    else if (x === 2) return "paper";
+    let x = Math.floor(Math.random() * 3);
+    if (x === 0) return "rock";
+    else if (x === 1) return "paper";
     else return "scissor";
 }
 
 function getPlayerChoice() {
-    const x = prompt("Rock, Paper, or Scissors? Enter 'f' to quit.: ");
-    const input = x.toLowerCase();
+    let x = prompt("Rock, Paper, or Scissors? Enter 'f' to quit.: ");
+    let input = x.toLowerCase();
     while (true) {
 
-        if (input !== 'rock' || input !== 'paper' || input !== 'scissor' || input !== 'f') {
-            console.log("Please enter either rock, paper, or scissors. Enter 'f' to quit.");
-            const x = prompt("Rock, Paper, or Scissors? Enter 'f' to quit.: ");
-            const input = x.toLowerCase();
+        if (input === 'rock' || input === 'paper' || input === 'scissor' || input === 'f') {
+            break;
         }
-        else break;
+        else {
+            console.log("Please enter either rock, paper, or scissor. Enter 'f' to quit.");
+            x = prompt("Rock, Paper, or Scissors? Enter 'f' to quit.: ");
+            input = x.toLowerCase();
+        }
     }
     return input;
     
+}
+
+function printFinalResult(plrChoice, plrScore, pcScore) {
+    if (plrChoice === 'f') {
+        console.log("The pathetic human who can't even bring the courage to play a simple game like rock paper scissor just FORFEITED");
+        console.log("The PC wins");
+    }
+    else {
+        console.log(`\nFinal result: \n\t
+        Human: ${plrScore}\n\t
+        PC: ${pcScore}`);
+        if (plrScore > pcScore) {
+            console.log(`\nThe Human wins.`);
+        }
+        else {
+            console.log("\nThe PC wins.")
+        }
+    }
+
 }
 
 function playRound() {
 
     let plrScore = 0;
     let pcScore = 0;
+    let plrChoice;
+    let pcChoice;
     
     for (let i = 0; i < 5; i++) {
-        const plrChoice = getPlayerChoice();
-        const pcChoice = getComputerChoice();
+        plrChoice = getPlayerChoice();
+        pcChoice = getComputerChoice();
         
-        if (plrChoice === "rock" && pcChoice === "scissor") plrScore++;
+        if (plrChoice === 'f') break;
 
-        else if (plrChoice === "scissor" && pcChoice === "paper") plrScore++;
+        else {
+            if (plrChoice === "rock" && pcChoice === "scissor") {
+                plrScore++;
+                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
+            } 
+    
+            else if (plrChoice === "scissor" && pcChoice === "paper") {
+                plrScore++;
+                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
+            }
+    
+            else if (plrChoice === "rock" && pcChoice === "scissor") {
+                plrScore++;
+                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
+    
+            }
+    
+            else if (plrChoice === "paper" && pcChoice === "rock") {
+                plrScore++;
+                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
+                
+            }
 
-        else if (plrChoice === "rock" && pcChoice === "scissor") plrScore++;
-
-        else if (plrChoice === "paper" && pcChoice === "rock") plrScore++;
-
-        else pcScore++;
+            else if (plrChoice === pcChoice) {
+                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". Play the round again.`);
+                i--;
+            }
+    
+            else {
+                pcScore++;
+                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". PC wins this round.`);
+            }
+        }
     }
-    console.log(`Final result. PC Score: ${pcScore}. Human Score: ${plrScore}`);
-    if (plrScore > pcScore) {
-        console.log("The Human wins against PC.");
-    }
-    else console.log("PC wins against the Human.");
+
+    printFinalResult(plrChoice, plrScore, pcScore);
 }

@@ -41,10 +41,9 @@ function printFinalResult(plrChoice, plrScore, pcScore) {
             console.log("\nThe PC wins.")
         }
     }
-
 }
 
-function playRound() {
+function playGame() {
 
     let plrScore = 0;
     let pcScore = 0;
@@ -91,6 +90,5 @@ function playRound() {
             }
         }
     }
-
     printFinalResult(plrChoice, plrScore, pcScore);
 }

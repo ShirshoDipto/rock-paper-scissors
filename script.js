@@ -91,17 +91,10 @@ function playGame(e) {
         dialogue.textContent = scoreMsg[0];
         plrscore.textContent = `Player Score: ${plrScore}`;
         pcscore.textContent = `Computer Score: ${pcScore}`;
-    }
-    else if (plrScore === 5 || pcScore === 5) {
-        printFinalResult(plrChoice, plrScore, pcScore);
-        this.removeEventListener('click', playGame);
-        const btn = document.createElement('button');
-        console.log(btn)
-        btn.classList.toggle('playAgain');
-        btn.textContent = 'Play Again?'
-        const body = document.querySelector('.bod');
-        body.appendChild(btn);
 
+        if (plrScore === 5 || pcScore === 5) {
+            printFinalResult(plrChoice, plrScore, pcScore);
+        }
     }
 }
 

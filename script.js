@@ -7,88 +7,112 @@ function getComputerChoice() {
     else return "scissor";
 }
 
-function getPlayerChoice() {
-    let x = prompt("Rock, Paper, or Scissors? Enter 'f' to quit.: ");
-    let input = x.toLowerCase();
-    while (true) {
-
-        if (input === 'rock' || input === 'paper' || input === 'scissor' || input === 'f') {
-            break;
-        }
-        else {
-            console.log("Please enter either rock, paper, or scissor. Enter 'f' to quit.");
-            x = prompt("Rock, Paper, or Scissors? Enter 'f' to quit.: ");
-            input = x.toLowerCase();
-        }
-    }
-    return input;
-    
-}
-
 function printFinalResult(plrChoice, plrScore, pcScore) {
-    if (plrChoice === 'f') {
-        console.log("The pathetic human who can't even bring the courage to play a simple game like rock paper scissor just FORFEITED");
-        console.log("The PC wins");
+    const finalScore = document.querySelector('.finalScore');
+    console.log(finalScore);
+
+    if (plrScore > pcScore) {
+        finalScore.textContent = `Final Score: YOU = ${plrScore}, Computer = ${pcScore}. You WIN!`
     }
     else {
-        console.log(`\nFinal result: \n\t
-        Human: ${plrScore}\n\t
-        PC: ${pcScore}`);
-        if (plrScore > pcScore) {
-            console.log(`\nThe Human wins.`);
-        }
-        else {
-            console.log("\nThe PC wins.")
-        }
+        finalScore.textContent = `Final Score: YOU = ${plrScore}, Computer = ${pcScore}. Computer WINS!`
     }
 }
 
-function playGame() {
+function playRound(playerSelection, computerSelection) {
 
-    let plrScore = 0;
-    let pcScore = 0;
-    let plrChoice;
-    let pcChoice;
-    
-    for (let i = 0; i < 5; i++) {
-        plrChoice = getPlayerChoice();
+    let scoresAndMsg = ["", 0, 0];
+
+    if (playerSelection === "rock" && computerSelection === "scissor") {
+        const msg = `You choose "${playerSelection}" and PC choose "${computerSelection}". You win this round.`
+        scoresAndMsg[0] = msg;
+        scoresAndMsg[1] = 1;
+        scoresAndMsg[2] = 0;
+    } 
+
+    else if (playerSelection === "scissor" && computerSelection === "paper") {
+        const msg = `You choose "${playerSelection}" and PC choose "${computerSelection}". You win this round.`
+        scoresAndMsg[0] = msg;
+        scoresAndMsg[1] = 1;
+        scoresAndMsg[2] = 0;
+    }
+
+    else if (playerSelection === "rock" && computerSelection === "scissor") {
+        const msg = `You choose "${playerSelection}" and PC choose "${computerSelection}". You win this round.`
+        scoresAndMsg[0] = msg;
+        scoresAndMsg[1] = 1;
+        scoresAndMsg[2] = 0;
+    }
+
+    else if (playerSelection === "paper" && computerSelection === "rock") {
+        const msg = `You choose "${playerSelection}" and PC choose "${computerSelection}". You win this round.`
+        scoresAndMsg[0] = msg;
+        scoresAndMsg[1] = 1;
+        scoresAndMsg[2] = 0;
+    }
+
+    else if (playerSelection === computerSelection) {
+        const msg = `You choose "${playerSelection}" and PC choose "${computerSelection}". Play the round again.`
+        scoresAndMsg[0] = msg;
+    }
+
+    else {
+        const msg = `You choose "${playerSelection}" and PC choose "${computerSelection}". PC wins this round.`
+        scoresAndMsg[0] = msg;
+        scoresAndMsg[1] = 0;
+        scoresAndMsg[2] = 1;
+    }
+    return scoresAndMsg;
+}
+
+const buttons = document.querySelectorAll('button');
+const main = document.querySelector('.main');
+const dialogue = document.querySelector('.printDialogue');
+const plrscore = document.querySelector('.plrscore');
+const pcscore = document.querySelector('.pcscore');
+
+
+let plrScore = 0;
+let pcScore = 0;
+let plrChoice;
+let pcChoice;
+
+function playGame(e) {
+
+    console.log(e);
+    if (plrScore < 5 && pcScore < 5) {
+        plrChoice = this.className;
         pcChoice = getComputerChoice();
-        
-        if (plrChoice === 'f') break;
+        const scoreMsg = playRound(plrChoice, pcChoice);
+        plrScore += scoreMsg[1];
+        pcScore += scoreMsg[2];
 
-        else {
-            if (plrChoice === "rock" && pcChoice === "scissor") {
-                plrScore++;
-                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
-            } 
-    
-            else if (plrChoice === "scissor" && pcChoice === "paper") {
-                plrScore++;
-                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
-            }
-    
-            else if (plrChoice === "rock" && pcChoice === "scissor") {
-                plrScore++;
-                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
-    
-            }
-    
-            else if (plrChoice === "paper" && pcChoice === "rock") {
-                plrScore++;
-                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". You win this round.`);
-                
-            }
-
-            else if (plrChoice === pcChoice) {
-                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". Play the round again.`);
-                i--;
-            }
-    
-            else {
-                pcScore++;
-                console.log(`You choose "${plrChoice}" and PC choose "${pcChoice}". PC wins this round.`);
-            }
-        }
+        // print text after one round
+        dialogue.textContent = scoreMsg[0];
+        plrscore.textContent = `Player Score: ${plrScore}`;
+        pcscore.textContent = `Computer Score: ${pcScore}`;
     }
-    printFinalResult(plrChoice, plrScore, pcScore);
+    else if (plrScore === 5 || pcScore === 5) {
+        printFinalResult(plrChoice, plrScore, pcScore);
+        this.removeEventListener('click', playGame);
+        const btn = document.createElement('button');
+        console.log(btn)
+        btn.classList.toggle('playAgain');
+        btn.textContent = 'Play Again?'
+        const body = document.querySelector('.bod');
+        body.appendChild(btn);
+
+    }
 }
+
+buttons.forEach((button) => {
+    button.addEventListener('click', playGame);
+});
+
+
+
+
+
+
+
+
